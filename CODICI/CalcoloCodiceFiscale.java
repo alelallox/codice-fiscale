@@ -126,7 +126,7 @@ public class CalcoloCodiceFiscale {
     //metodo che dato il luogo di nascita va a ricercare il codice associato nel file CSV contenente tutti i comuni italiani
     public static String calcolaCodiceLuogoNascita(String luogoNascita) {
         
-        String filePath = new File("C:\\Users\\aless\\Desktop\\java\\scuola\\altri\\CODICI\\codici.csv").getAbsolutePath();
+        String filePath = new File("direcotry file CSV").getAbsolutePath();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
