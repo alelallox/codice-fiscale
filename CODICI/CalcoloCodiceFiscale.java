@@ -7,8 +7,8 @@ import java.io.File;
 public class CalcoloCodiceFiscale {
 
     public static void main(String[] args) {
-        String nome = "Alessandro";
-        String cognome = "Donati";
+        String nome = "Mario";
+        String cognome = "Rossi";
         String sesso = "m";
         String luogoNascita = "rho";
         String provincia = "mi";
@@ -123,39 +123,28 @@ public class CalcoloCodiceFiscale {
     }
     
 
-    
+    //metodo che dato il luogo di nascita va a ricercare il codice associato nel file CSV contenente tutti i comuni italiani
     public static String calcolaCodiceLuogoNascita(String luogoNascita) {
-        HashMap<String, String> codiciLuoghi = new HashMap<>();
-        codiciLuoghi.put("ROMA", "H501");
-        codiciLuoghi.put("MILANO","F205");
-        codiciLuoghi.put("RHO","H264");
-        codiciLuoghi.put("LAINATE","E415");
+        
+        String filePath = new File("C:\\Users\\aless\\Desktop\\java\\scuola\\altri\\CODICI\\codici.csv").getAbsolutePath();
 
-        if (codiciLuoghi.containsKey(luogoNascita)) {
-            // La chiave è presente, restituisci il valore associato
-            return codiciLuoghi.get(luogoNascita);
-        } else {
-            String filePath = new File("C:\\Users\\aless\\Desktop\\CODICI\\codici.csv").getAbsolutePath();
-            String comune = "ZUNGRI";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] columns = line.split(",,");
+                String comuneRiga = columns[0];
+                String codice = columns[1];
 
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] columns = line.split(",,");
-                    String comuneRiga = columns[0];
-                    String codice = columns[1];
-
-                    if (comuneRiga.equals(comune)) {
-                        System.out.println("COMUNE: " + comuneRiga + ", CODICE: " + codice);
-                        break; // Se vuoi fermarti dopo aver trovato il comune
-                    }
+                if (comuneRiga.equals(luogoNascita)) {
+                    return codice;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return "Z999";
     }
-
+    //metodo che calcola l'ultimo carattere di controllo 
     public static char calcolaCarattereControllo(String codiceFiscaleParziale) {
         int sommaPari = 0;
         int sommaDispari = 0;
@@ -184,7 +173,7 @@ public class CalcoloCodiceFiscale {
         return carattereControllo;
     }
     
-
+    //tabelle per il calcolo del carattere di controllo.
     public static int convertiCaratterePari(char carattere) {
         switch (Character.toUpperCase(carattere)) {
             case 'A': case '0': return 0;
